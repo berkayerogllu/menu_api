@@ -1,15 +1,14 @@
-# Java 17'nin hafif bir sürümü
-FROM openjdk:17-jdk-slim
+FROM maven:3.8.7-openjdk-17-slim AS build
 
-# Çalışma dizini
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
 
-# Projenin derlenmiş jar dosyasını kopyala
-COPY target/appmenu-0.0.1-SNAPSHOT.jar appmenu.jar
+RUN mvn clean package -DskipTests
 
-# Spring Boot default portu aç
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/appmenu-0.0.1-SNAPSHOT.jar appmenu.jar
+
 EXPOSE 8080
-
-# Uygulamayı başlat
 ENTRYPOINT ["java", "-jar", "appmenu.jar"]
-
