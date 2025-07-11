@@ -1,8 +1,8 @@
 services:
   - type: web
     name: menu-api
-    env: static
-    plan: free
+    env: java
+    plan: hobby
     buildCommand: "./mvnw clean package"
     startCommand: "java -jar target/appmenu-0.0.1-SNAPSHOT.jar"
     envVars:
